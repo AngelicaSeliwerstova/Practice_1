@@ -30,11 +30,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.vkcourse.applist.data.CatalogApp
+import com.example.vkcourse.applist.domain.model.CatalogApp
 
 @Composable
 fun AppDetailsScreen(
     app: CatalogApp,
+    apps: List<CatalogApp>,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onInstallClick: () -> Unit,
@@ -49,6 +50,7 @@ fun AppDetailsScreen(
     ) {
         AppDetailsContent(
             app = app,
+            apps = apps,
             onBackClick = onBackClick,
             onShareClick = onShareClick,
             onInstallClick = onInstallClick,
@@ -60,6 +62,7 @@ fun AppDetailsScreen(
 @Composable
 private fun AppDetailsContent(
     app: CatalogApp,
+    apps: List<CatalogApp>,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onInstallClick: () -> Unit,
@@ -80,7 +83,10 @@ private fun AppDetailsContent(
         Spacer(modifier = Modifier.height(12.dp))
         Developer(app = app)
         Spacer(modifier = Modifier.height(28.dp))
-        ShowcasePager(onAppClick = onShowcaseAppClick)
+        ShowcasePager(
+            apps = apps,
+            onAppClick = onShowcaseAppClick
+        )
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
@@ -106,7 +112,7 @@ private fun AppDetailsHeader(app: CatalogApp) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(app.iconRes),
+            painter = painterResource(app.icon.drawableResource()),
             contentDescription = "Иконка приложения ${app.name}",
             modifier = Modifier.size(112.dp)
         )

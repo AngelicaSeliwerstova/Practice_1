@@ -24,7 +24,7 @@ private const val DETAILS_ROUTE = "details/{appId}"
 
 @Composable
 fun AppCatalogApp(
-    catalogViewModel: CatalogViewModel = viewModel()
+    catalogViewModel: CatalogViewModel = viewModel(factory = CatalogViewModel.Factory)
 ) {
     val navController = rememberNavController()
     val apps by catalogViewModel.apps.collectAsState()
@@ -72,6 +72,7 @@ fun AppCatalogApp(
                 } else {
                     AppDetailsScreen(
                         app = app,
+                        apps = apps,
                         onBackClick = { navController.popBackStack() },
                         onShareClick = catalogViewModel::onShareClick,
                         onInstallClick = catalogViewModel::onInstallClick,
