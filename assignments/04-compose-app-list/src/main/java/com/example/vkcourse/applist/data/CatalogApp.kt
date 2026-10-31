@@ -66,5 +66,21 @@ val sampleApps = listOf(
         description = "Вещи для дома, подарки и интересные находки.",
         category = "Покупки",
         iconRes = R.drawable.ic_app_market
+    ),
+    CatalogApp(
+        id = "calls",
+        name = "VK Звонки",
+        description = "Звонки друзьям и коллегам в хорошем качестве.",
+        category = "Общение",
+        iconRes = R.drawable.ic_app_calls
     )
 )
+
+const val SHOWCASE_PAGE_SIZE = 3
+const val SHOWCASE_PAGE_COUNT = 3
+
+val showcasePages = sampleApps.chunked(SHOWCASE_PAGE_SIZE).also { pages ->
+    require(pages.size == SHOWCASE_PAGE_COUNT && pages.all { it.size == SHOWCASE_PAGE_SIZE }) {
+        "В витрине должно быть ровно три страницы по три приложения"
+    }
+}

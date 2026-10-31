@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,11 +33,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.vkcourse.applist.R
 import com.example.vkcourse.applist.data.CatalogApp
-import com.example.vkcourse.applist.data.sampleApps
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCatalogScreen(
+    apps: List<CatalogApp>,
+    onAppClick: (CatalogApp) -> Unit,
+    onToolbarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
@@ -45,7 +48,9 @@ fun AppCatalogScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                modifier = Modifier.testTag("catalog_toolbar"),
+                modifier = Modifier
+                    .testTag("catalog_toolbar")
+                    .clickable(onClick = onToolbarClick),
                 navigationIcon = {
                     Image(
                         painter = painterResource(R.drawable.ic_catalog),
@@ -95,7 +100,7 @@ fun AppCatalogScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "${sampleApps.size} приложений в подборке",
+                    text = "${apps.size} приложений в подборке",
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary
@@ -116,10 +121,13 @@ fun AppCatalogScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(
-                    items = sampleApps,
+                    items = apps,
                     key = CatalogApp::id
                 ) { app ->
-                    AppListItem(app)
+                    AppListItem(
+                        app = app,
+                        onClick = { onAppClick(app) }
+                    )
                 }
             }
         }
@@ -127,9 +135,16 @@ fun AppCatalogScreen(
 }
 
 @Composable
-private fun AppListItem(app: CatalogApp) {
+fun AppListItem(
+    app: CatalogApp,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("app_item_${app.id}"),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface

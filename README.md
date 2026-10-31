@@ -8,7 +8,8 @@
 | --- | --- | --- | --- |
 | 1 | Исходное приложение из `Practice_1` | `homework-01` | [Исходники и запуск](assignments/01-practice/README.md) |
 | 3 | Activity и Intent | `homework-03` | [Описание и самопроверка](assignments/03-intents/README.md) |
-| 4 | Создание UI в Android. Часть 1 | `homework-04` | [Каталог приложений на Compose](assignments/04-compose-app-list/README.md) |
+| 4 | Создание UI в Android. Части 1–2 | `homework-04` | [Каталог, карточка и витрина](assignments/04-compose-app-list/README.md) |
+| 5 | Presentation-слой | `homework-04` | ViewModel и одноразовые UI-события описаны в README задания 4 |
 
 ## Структура проекта
 
@@ -45,11 +46,11 @@ settings.gradle.kts         # Подключение модулей курса
 ## Проверки
 
 ```powershell
-.\gradlew.bat :homework-01:testDebugUnitTest :homework-03:testDebugUnitTest
+.\gradlew.bat :homework-01:testDebugUnitTest :homework-03:testDebugUnitTest :homework-04:testDebugUnitTest
 .\gradlew.bat :homework-03:lintDebug :homework-04:lintDebug
 ```
 
-UI-тесты каталога запускаются на подключённом Android-устройстве или эмуляторе:
+UI-тесты навигации, витрины и Snackbar запускаются на подключённом Android-устройстве или эмуляторе:
 
 ```powershell
 .\gradlew.bat :homework-04:connectedDebugAndroidTest
