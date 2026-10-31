@@ -22,5 +22,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Practice1"
-include(":app")
+rootProject.name = "VKCourse"
+
+include(":homework-01", ":homework-03", ":homework-04")
+project(":homework-01").projectDir = file("assignments/01-practice")
+project(":homework-03").projectDir = file("assignments/03-intents")
+project(":homework-04").projectDir = file("assignments/04-compose-app-list")
