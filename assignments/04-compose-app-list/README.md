@@ -18,6 +18,28 @@
 
 Каталог использует `CatalogViewModel` для хранения списка и одноразовых UI-событий. Сообщение Snackbar отправляется по нажатию на тулбар через поток событий без replay: после поворота экрана оно не показывается повторно. ViewModel и сохранённый Navigation back stack удерживают состояние при пересоздании Activity.
 
+## Практическая работа №6 — Clean Architecture
+
+Каталог разделён на три слоя. `presentation` содержит Compose UI и `CatalogViewModel`; ViewModel получает список через `GetCatalogAppsUseCase`. В `domain` расположены независимая от Android модель `CatalogApp`, интерфейс `CatalogRepository` и use case. В `data` находятся DTO, локальный источник захардкоженных данных, mapper `CatalogAppDto.toDomain()` и реализация репозитория `DefaultCatalogRepository`. UI-ресурсы иконок сопоставляются с доменным enum только в presentation UI.
+
+```text
+data/
+├── CatalogAppDto.kt
+├── CatalogAppMapper.kt
+├── CatalogDataSource.kt
+└── DefaultCatalogRepository.kt
+domain/
+├── model/CatalogApp.kt
+├── repository/CatalogRepository.kt
+└── usecase/GetCatalogAppsUseCase.kt
+presentation/
+└── CatalogViewModel.kt
+ui/
+└── Compose screens
+```
+
+Unit-тест проверяет преобразование DTO в domain-модель и получение девяти приложений через repository/use case.
+
 ## Условия и реализация
 
 | Требование | Реализация |
@@ -27,10 +49,11 @@
 | Вертикальный список | `LazyColumn` с ключами элементов |
 | Поля каждой записи | Иконка, название, описание и категория |
 | Jetpack Compose | Весь экран собран Compose-компонентами |
-| Захардкоженные данные | `sampleApps` и локальные drawable-иконки |
+| Захардкоженные данные | DTO из `CatalogDataSource` и локальные drawable-иконки |
 | Витрина в карточке | Три страницы `HorizontalPager`, по три приложения |
 | Навигация | `NavHost` и `NavController` |
 | Presentation-слой | `CatalogViewModel` и одноразовый поток UI-событий |
+| Data, domain, presentation | DTO → mapper → domain model; repository и use case; ViewModel и Compose UI |
 
 Поддерживаются светлая и тёмная системные темы. Список сохраняет позицию прокрутки, карточки подстраиваются под текст, а Snackbar не повторяется после пересоздания Activity.
 
@@ -68,7 +91,13 @@
 
 ```text
 src/main/java/com/example/vkcourse/applist/
-├── data/CatalogApp.kt
+├── data/CatalogAppDto.kt
+├── data/CatalogAppMapper.kt
+├── data/CatalogDataSource.kt
+├── data/DefaultCatalogRepository.kt
+├── domain/model/CatalogApp.kt
+├── domain/repository/CatalogRepository.kt
+├── domain/usecase/GetCatalogAppsUseCase.kt
 ├── presentation/CatalogViewModel.kt
 ├── ui/AppCatalogApp.kt
 ├── ui/AppCatalogScreen.kt

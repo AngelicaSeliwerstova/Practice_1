@@ -15,15 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.vkcourse.applist.data.CatalogApp
-import com.example.vkcourse.applist.data.SHOWCASE_PAGE_COUNT
-import com.example.vkcourse.applist.data.showcasePages
+import com.example.vkcourse.applist.domain.model.CatalogApp
+import com.example.vkcourse.applist.domain.model.SHOWCASE_PAGE_COUNT
+import com.example.vkcourse.applist.domain.model.SHOWCASE_PAGE_SIZE
 
 @Composable
 fun ShowcasePager(
+    apps: List<CatalogApp>,
     onAppClick: (CatalogApp) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val pages = apps.chunked(SHOWCASE_PAGE_SIZE)
+    require(pages.size == SHOWCASE_PAGE_COUNT && pages.all { it.size == SHOWCASE_PAGE_SIZE }) {
+        "В витрине должно быть ровно три страницы по три приложения"
+    }
     val pagerState = rememberPagerState(pageCount = { SHOWCASE_PAGE_COUNT })
 
     Column(modifier = modifier.fillMaxWidth()) {
@@ -45,7 +50,7 @@ fun ShowcasePager(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                showcasePages[page].forEach { app ->
+                pages[page].forEach { app ->
                     AppListItem(
                         app = app,
                         onClick = { onAppClick(app) }

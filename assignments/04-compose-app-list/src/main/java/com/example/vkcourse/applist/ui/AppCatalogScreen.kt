@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.vkcourse.applist.R
-import com.example.vkcourse.applist.data.CatalogApp
+import com.example.vkcourse.applist.domain.model.CatalogApp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,7 +122,7 @@ fun AppCatalogScreen(
             ) {
                 items(
                     items = apps,
-                    key = CatalogApp::id
+                    key = { app -> app.id }
                 ) { app ->
                     AppListItem(
                         app = app,
@@ -158,7 +158,7 @@ fun AppListItem(
             verticalAlignment = Alignment.Top
         ) {
             Image(
-                painter = painterResource(app.iconRes),
+                painter = painterResource(app.icon.drawableResource()),
                 contentDescription = "Иконка приложения ${app.name}",
                 modifier = Modifier.size(56.dp)
             )

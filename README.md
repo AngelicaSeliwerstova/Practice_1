@@ -10,6 +10,7 @@
 | 3 | Activity и Intent | `homework-03` | [Описание и самопроверка](assignments/03-intents/README.md) |
 | 4 | Создание UI в Android. Части 1–2 | `homework-04` | [Каталог, карточка и витрина](assignments/04-compose-app-list/README.md) |
 | 5 | Presentation-слой | `homework-04` | ViewModel и одноразовые UI-события описаны в README задания 4 |
+| 6 | Слоистая архитектура (Clean Architecture) | `homework-04` | Data, domain, presentation, DTO, mapper, repository и use case описаны в README задания 4 |
 
 ## Структура проекта
 
