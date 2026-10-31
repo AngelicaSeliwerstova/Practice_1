@@ -3,7 +3,7 @@ package com.example.vkcourse.applist
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.vkcourse.applist.ui.AppCatalogScreen
+import com.example.vkcourse.applist.ui.AppCatalogApp
 import com.example.vkcourse.applist.ui.theme.CatalogTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CatalogTheme {
-                AppCatalogScreen()
+                AppCatalogApp()
             }
         }
     }
