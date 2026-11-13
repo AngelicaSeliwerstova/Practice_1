@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,11 +32,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.vkcourse.applist.domain.model.CatalogApp
+import com.example.vkcourse.applist.presentation.InstallState
 
 @Composable
 fun AppDetailsScreen(
     app: CatalogApp,
     apps: List<CatalogApp>,
+    ratings: Map<String, Float>,
+    installState: InstallState,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onInstallClick: () -> Unit,
@@ -51,6 +55,8 @@ fun AppDetailsScreen(
         AppDetailsContent(
             app = app,
             apps = apps,
+            ratings = ratings,
+            installState = installState,
             onBackClick = onBackClick,
             onShareClick = onShareClick,
             onInstallClick = onInstallClick,
@@ -63,6 +69,8 @@ fun AppDetailsScreen(
 private fun AppDetailsContent(
     app: CatalogApp,
     apps: List<CatalogApp>,
+    ratings: Map<String, Float>,
+    installState: InstallState,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onInstallClick: () -> Unit,
@@ -73,7 +81,7 @@ private fun AppDetailsContent(
         Spacer(modifier = Modifier.height(8.dp))
         AppDetailsHeader(app)
         Spacer(modifier = Modifier.height(16.dp))
-        InstallButton(onClick = onInstallClick)
+        InstallButton(installState = installState, onClick = onInstallClick)
         Spacer(modifier = Modifier.height(12.dp))
         HorizontalDivider()
         Spacer(modifier = Modifier.height(12.dp))
@@ -85,6 +93,7 @@ private fun AppDetailsContent(
         Spacer(modifier = Modifier.height(28.dp))
         ShowcasePager(
             apps = apps,
+            ratings = ratings,
             onAppClick = onShowcaseAppClick
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -156,12 +165,24 @@ private fun AppDetailsHeader(app: CatalogApp) {
 }
 
 @Composable
-private fun InstallButton(onClick: () -> Unit) {
+private fun InstallButton(installState: InstallState, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
+        enabled = installState != InstallState.Installed,
+        modifier = Modifier.fillMaxWidth().testTag("install_button")
     ) {
-        Text("Установить")
+        Text(when (installState) {
+            InstallState.NotInstalled -> "Установить"
+            is InstallState.Installing -> "Отменить"
+            InstallState.Installed -> "Установлено"
+        })
+    }
+    if (installState is InstallState.Installing) {
+        LinearProgressIndicator(
+            progress = { installState.progress / 100f },
+            modifier = Modifier.fillMaxWidth().testTag("install_progress")
+        )
+        Text("${installState.progress}%", style = MaterialTheme.typography.labelSmall)
     }
 }
 

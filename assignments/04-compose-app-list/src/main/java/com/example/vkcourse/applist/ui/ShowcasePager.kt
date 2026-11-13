@@ -22,6 +22,7 @@ import com.example.vkcourse.applist.domain.model.SHOWCASE_PAGE_SIZE
 @Composable
 fun ShowcasePager(
     apps: List<CatalogApp>,
+    ratings: Map<String, Float>,
     onAppClick: (CatalogApp) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -53,6 +54,7 @@ fun ShowcasePager(
                 pages[page].forEach { app ->
                     AppListItem(
                         app = app,
+                        rating = ratings[app.id],
                         onClick = { onAppClick(app) }
                     )
                 }

@@ -52,6 +52,21 @@ class AppCatalogScreenTest {
     }
 
     @Test
+    fun installationCanBeCancelledAndStartedAgain() {
+        composeRule.onNodeWithTag("app_item_vk").performClick()
+        composeRule.onNodeWithTag("install_button").performClick()
+        composeRule.onNodeWithText("Отменить").assertIsDisplayed()
+        composeRule.onNodeWithTag("install_button").performClick()
+        composeRule.onNodeWithText("Установить").assertIsDisplayed()
+
+        composeRule.onNodeWithTag("install_button").performClick()
+        composeRule.waitUntil(5_000) {
+            composeRule.onAllNodesWithText("Установлено").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("Установлено").assertIsDisplayed()
+    }
+
+    @Test
     fun showcaseHasThreePagesOfThreeApps() {
         composeRule.onNodeWithTag("app_item_vk").performClick()
         composeRule
@@ -77,7 +92,7 @@ class AppCatalogScreenTest {
         composeRule.activityRule.scenario.recreate()
 
         composeRule.onNodeWithTag("catalog_toolbar").assertIsDisplayed()
-        composeRule.onNodeWithText("9 приложений в подборке").assertIsDisplayed()
+        composeRule.onNodeWithText("12 приложений в подборке").assertIsDisplayed()
         composeRule.onAllNodesWithText("Каталог приложений готов").assertCountEquals(0)
     }
 
