@@ -33,11 +33,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.vkcourse.applist.R
 import com.example.vkcourse.applist.domain.model.CatalogApp
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppCatalogScreen(
     apps: List<CatalogApp>,
+    ratings: Map<String, Float>,
+    ratingTimes: Pair<Long?, Long?>,
     onAppClick: (CatalogApp) -> Unit,
     onToolbarClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -105,6 +108,17 @@ fun AppCatalogScreen(
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.primary
                 )
+                val (sequential, parallel) = ratingTimes
+                if (sequential != null) {
+                    Text(
+                        text = if (parallel == null) {
+                            "Рейтинги по очереди: ${sequential} мс. Параллельная загрузка…"
+                        } else {
+                            "Рейтинги: по очереди ${sequential} мс, параллельно ${parallel} мс"
+                        },
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
 
             LazyColumn(
@@ -126,6 +140,7 @@ fun AppCatalogScreen(
                 ) { app ->
                     AppListItem(
                         app = app,
+                        rating = ratings[app.id],
                         onClick = { onAppClick(app) }
                     )
                 }
@@ -138,7 +153,8 @@ fun AppCatalogScreen(
 fun AppListItem(
     app: CatalogApp,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    rating: Float? = null
 ) {
     Card(
         onClick = onClick,
@@ -172,6 +188,12 @@ fun AppListItem(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = rating?.let { "★ ${String.format(Locale.US, "%.1f", it)}" } ?: "★ …",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.testTag("rating_${app.id}")
                 )
                 Text(
                     text = app.description,

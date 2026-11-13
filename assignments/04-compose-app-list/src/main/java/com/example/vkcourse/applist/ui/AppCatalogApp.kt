@@ -18,6 +18,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.vkcourse.applist.presentation.CatalogEvent
 import com.example.vkcourse.applist.presentation.CatalogViewModel
+import com.example.vkcourse.applist.presentation.AppDetailsState
+import com.example.vkcourse.applist.presentation.AppDetailsViewModel
+import com.example.vkcourse.applist.domain.model.SHOWCASE_PAGE_COUNT
+import com.example.vkcourse.applist.domain.model.SHOWCASE_PAGE_SIZE
 
 private const val CATALOG_ROUTE = "catalog"
 private const val DETAILS_ROUTE = "details/{appId}"
@@ -28,6 +32,8 @@ fun AppCatalogApp(
 ) {
     val navController = rememberNavController()
     val apps by catalogViewModel.apps.collectAsState()
+    val ratings by catalogViewModel.ratings.collectAsState()
+    val ratingTimes by catalogViewModel.ratingTimes.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(catalogViewModel, snackbarHostState) {
@@ -50,6 +56,8 @@ fun AppCatalogApp(
             composable(CATALOG_ROUTE) {
                 AppCatalogScreen(
                     apps = apps,
+                    ratings = ratings,
+                    ratingTimes = ratingTimes,
                     onAppClick = { app ->
                         navController.navigate("details/${app.id}") {
                             launchSingleTop = true
@@ -70,12 +78,16 @@ fun AppCatalogApp(
                 if (app == null) {
                     UnknownAppScreen(onBackClick = { navController.popBackStack() })
                 } else {
+                    val detailsViewModel: AppDetailsViewModel = viewModel(viewModelStoreOwner = backStackEntry)
+                    val detailsState by detailsViewModel.state.collectAsState()
                     AppDetailsScreen(
                         app = app,
-                        apps = apps,
+                        apps = apps.take(SHOWCASE_PAGE_COUNT * SHOWCASE_PAGE_SIZE),
+                        ratings = ratings,
+                        installState = (detailsState as AppDetailsState.Content).installState,
                         onBackClick = { navController.popBackStack() },
                         onShareClick = catalogViewModel::onShareClick,
-                        onInstallClick = catalogViewModel::onInstallClick,
+                        onInstallClick = detailsViewModel::onInstallClick,
                         onShowcaseAppClick = {
                             navController.popBackStack(
                                 route = CATALOG_ROUTE,

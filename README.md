@@ -11,6 +11,7 @@
 | 4 | Создание UI в Android. Части 1–2 | `homework-04` | [Каталог, карточка и витрина](assignments/04-compose-app-list/README.md) |
 | 5 | Presentation-слой | `homework-04` | ViewModel и одноразовые UI-события описаны в README задания 4 |
 | 6 | Слоистая архитектура (Clean Architecture) | `homework-04` | Data, domain, presentation, DTO, mapper, repository и use case описаны в README задания 4 |
+| 7 | Корутины и structured concurrency | `homework-04` | Отмена установки и загрузка рейтингов; [замеры](ANSWERS.md) |
 
 ## Структура проекта
 

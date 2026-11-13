@@ -66,6 +66,27 @@ class CatalogDataSource {
             description = "Звонки друзьям и коллегам в хорошем качестве.",
             category = "Общение",
             icon = CatalogAppIcon.CALLS
+        ),
+        CatalogAppDto(
+            id = "news",
+            name = "VK Новости",
+            description = "Новости и события из интересных сообществ.",
+            category = "Новости",
+            icon = CatalogAppIcon.SOCIAL
+        ),
+        CatalogAppDto(
+            id = "photos",
+            name = "VK Фото",
+            description = "Сохраняйте фотографии и делитесь альбомами.",
+            category = "Фото",
+            icon = CatalogAppIcon.CLOUD
+        ),
+        CatalogAppDto(
+            id = "books",
+            name = "VK Книги",
+            description = "Книги для учёбы и отдыха в одной библиотеке.",
+            category = "Книги",
+            icon = CatalogAppIcon.EDUCATION
         )
     )
 }

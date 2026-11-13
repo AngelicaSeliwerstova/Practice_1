@@ -23,12 +23,12 @@ class CatalogArchitectureTest {
     }
 
     @Test
-    fun useCaseReturnsNineMappedApplicationsThroughRepository() {
+    fun useCaseReturnsTwelveMappedApplicationsThroughRepository() {
         val repository = DefaultCatalogRepository(CatalogDataSource())
         val apps = GetCatalogAppsUseCase(repository)()
 
-        assertEquals(9, apps.size)
-        val pages = apps.chunked(SHOWCASE_PAGE_SIZE)
+        assertEquals(12, apps.size)
+        val pages = apps.take(SHOWCASE_PAGE_COUNT * SHOWCASE_PAGE_SIZE).chunked(SHOWCASE_PAGE_SIZE)
         assertEquals(SHOWCASE_PAGE_COUNT, pages.size)
         assertEquals(listOf(3, 3, 3), pages.map { it.size })
         assertEquals("ВКонтакте", apps.first().name)
