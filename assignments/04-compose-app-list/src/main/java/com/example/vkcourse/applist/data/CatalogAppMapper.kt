@@ -9,3 +9,11 @@ fun CatalogAppDto.toDomain(): CatalogApp = CatalogApp(
     category = category,
     icon = icon
 )
+
+fun CatalogApp.toDto(): CatalogAppDto = CatalogAppDto(
+    id = id,
+    name = name,
+    description = description,
+    category = category,
+    icon = icon
+)

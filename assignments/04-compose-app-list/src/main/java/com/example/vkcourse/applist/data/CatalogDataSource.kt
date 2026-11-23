@@ -2,8 +2,12 @@ package com.example.vkcourse.applist.data
 
 import com.example.vkcourse.applist.domain.model.CatalogAppIcon
 
-class CatalogDataSource {
-    fun getApps(): List<CatalogAppDto> = listOf(
+interface CatalogAppDataSource {
+    fun getApps(): List<CatalogAppDto>
+}
+
+class CatalogDataSource : CatalogAppDataSource {
+    override fun getApps(): List<CatalogAppDto> = listOf(
         CatalogAppDto(
             id = "vk",
             name = "ВКонтакте",

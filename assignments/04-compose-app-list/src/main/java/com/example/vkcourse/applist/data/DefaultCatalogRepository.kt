@@ -7,8 +7,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 class DefaultCatalogRepository(
-    private val dataSource: CatalogDataSource = CatalogDataSource(),
-    private val api: CatalogApi = CatalogApi()
+    private val dataSource: CatalogAppDataSource = CatalogDataSource(),
+    private val api: RatingApi = CatalogApi()
 ) : CatalogRepository {
     override fun getApps(): List<CatalogApp> =
         dataSource.getApps().map(CatalogAppDto::toDomain)
